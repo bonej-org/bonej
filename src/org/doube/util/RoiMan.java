@@ -1,14 +1,14 @@
 package org.doube.util;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.gui.Roi;
 import ij.measure.Calibration;
 import ij.plugin.frame.RoiManager;
 import ij.process.ImageProcessor;
-
-import java.awt.Rectangle;
-import java.util.ArrayList;
 
 /**
  * Do useful things with ImageJ's ROI Manager
@@ -57,13 +57,25 @@ public class RoiMan {
 	/**
 	 * Return a list of ROIs that are active in the given slice, s. ROIs without
 	 * a slice number are assumed to be active in all slices.
-	 * 
+	 *
 	 * @param roiMan
+	 * @param stack
 	 * @param s
-	 * @return
+	 * @return A list of active ROIs on the slice.
+     *         Returns an empty list if roiMan == null or stack == null
+     *         Returns an empty list if slice number is out of bounds
 	 */
-	public static ArrayList<Roi> getSliceRoi(RoiManager roiMan, int s) {
-		ArrayList<Roi> roiList = new ArrayList<Roi>();
+	public static ArrayList<Roi> getSliceRoi(RoiManager roiMan, ImageStack stack, int s) {
+		ArrayList<Roi> roiList = new ArrayList<>();
+
+		if (roiMan == null || stack == null) {
+			return roiList;
+		}
+
+        if (s < 1 || s > stack.getSize()) {
+            return roiList;
+        }
+
 		Roi[] rois = roiMan.getRoisAsArray();
 		for (Roi roi : rois) {
 			int sliceNumber = roiMan.getSliceNumber(roi.getName());
@@ -170,7 +182,7 @@ public class RoiMan {
 			if (fillBackground)
 				for (int i = 0; i < length; i++)
 					ip.set(i, fillValue);
-			ArrayList<Roi> rois = getSliceRoi(roiMan, z - zOff);
+			ArrayList<Roi> rois = getSliceRoi(roiMan, stack, z - zOff);
 			for (Roi roi : rois) {
 				ipSource.setRoi(roi);
 				Rectangle r = roi.getBounds();

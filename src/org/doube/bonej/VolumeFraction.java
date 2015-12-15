@@ -171,7 +171,7 @@ public class VolumeFraction implements PlugIn, DialogListener {
 								for (Roi roi : roiArray)
 									rois.add(roi);
 							} else
-								rois = RoiMan.getSliceRoi(roiMan, s);
+								rois = RoiMan.getSliceRoi(roiMan, stack, s);
 							if (rois.size() == 0)
 								continue;
 							for (Roi roi : rois) {
@@ -308,7 +308,7 @@ public class VolumeFraction implements PlugIn, DialogListener {
 								for (Roi roi : roiArray)
 									rois.add(roi);
 							} else
-								rois = RoiMan.getSliceRoi(roiMan, s);
+								rois = RoiMan.getSliceRoi(roiMan, stack, s);
 							if (rois.size() == 0)
 								continue;
 							for (Roi roi : rois) {
