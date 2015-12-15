@@ -188,6 +188,25 @@ public class RoiManTest {
 		assertEquals("Limits should end on the last slide", testStack.getSize(), limitsResult[MAX_Z_INDEX]);
 	}
 
+    @Test
+    public void testGetLimitsCropsTooLargeRois() throws Exception {
+        final int STACK_WIDTH = testStack.getWidth();
+        final int STACK_HEIGHT = testStack.getHeight();
+        Roi hugeRoi = new Roi(-100, -100, STACK_WIDTH + 100, STACK_HEIGHT + 100);
+        hugeRoi.setName("0001-0000-0001");
+        Roi rois[] = {hugeRoi};
+
+        when(mockRoiManager.getSliceNumber(anyString())).thenCallRealMethod();
+        when(mockRoiManager.getRoisAsArray()).thenReturn(rois);
+        when(mockRoiManager.getCount()).thenReturn(rois.length);
+
+        int limitsResult[] = RoiMan.getLimits(mockRoiManager, testStack);
+        assertEquals("Limits minimum x is incorrect", 0, limitsResult[0]);
+        assertEquals("Limits maximum x is incorrect", STACK_WIDTH, limitsResult[1]);
+        assertEquals("Limits minimum y is incorrect", 0, limitsResult[2]);
+        assertEquals("Limits maximum y is incorrect", STACK_HEIGHT, limitsResult[3]);
+    }
+
 	@Test
 	public void testGetLimits() throws Exception {
 		final int NUM_LIMITS = 6;
