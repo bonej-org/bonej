@@ -171,7 +171,7 @@ public class VolumeFraction implements PlugIn, DialogListener {
 								for (Roi roi : roiArray)
 									rois.add(roi);
 							} else
-								rois = RoiMan.getSliceRoi(roiMan, s);
+								rois = RoiMan.getSliceRoi(roiMan, stack, s);
 							if (rois.size() == 0)
 								continue;
 							for (Roi roi : rois) {
@@ -263,7 +263,7 @@ public class VolumeFraction implements PlugIn, DialogListener {
 		final int h = stack.getHeight();
 		final int nSlices = imp.getStackSize();
 		final RoiManager roiMan = RoiManager.getInstance();
-		final int[] limits = RoiMan.getLimits(roiMan);
+		final int[] limits = RoiMan.getLimits(roiMan, stack);
 		int xmin = 0, xmax = w - 1, ymin = 0, ymax = h - 1, zmin = 1, zmax = nSlices;
 		if (useRoiMan && limits != null) {
 			xmin = Math.max(limits[0], xmin);
@@ -308,7 +308,7 @@ public class VolumeFraction implements PlugIn, DialogListener {
 								for (Roi roi : roiArray)
 									rois.add(roi);
 							} else
-								rois = RoiMan.getSliceRoi(roiMan, s);
+								rois = RoiMan.getSliceRoi(roiMan, stack, s);
 							if (rois.size() == 0)
 								continue;
 							for (Roi roi : rois) {

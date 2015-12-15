@@ -28,25 +28,25 @@ public class ImageCheck {
 	// lost their z-position information
 	"1.48a" };
 
-	/**
-	 * Check if image is binary
-	 * 
-	 * @param imp
-	 * @return true if image is binary
-	 */
-	public boolean isBinary(ImagePlus imp) {
-		if (imp == null) {
-			IJ.noImage();
-			return false;
-		}
-		if (imp.getType() != ImagePlus.GRAY8)
-			return false;
+    /**
+     * Check if image is binary
+     *
+     * @param imp
+     * @return true if image is binary
+     */
+    public static boolean isBinary(ImagePlus imp) {
+        if (imp == null) {
+            IJ.error("Image is null");
+            return false;
+        }
 
-		ImageStatistics stats = imp.getStatistics();
-		if (stats.histogram[0] + stats.histogram[255] != stats.pixelCount)
-			return false;
-		return true;
-	}
+        if (imp.getType() != ImagePlus.GRAY8) {
+            return false;
+        }
+
+        ImageStatistics stats = imp.getStatistics();
+        return stats.histogram[0] + stats.histogram[255] == stats.pixelCount;
+    }
 
 	/**
 	 * Check if an image is a multi-slice image stack
