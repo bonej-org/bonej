@@ -34,7 +34,7 @@ public class ImageCheck {
 	 * @param imp
 	 * @return true if image is binary
 	 */
-	public boolean isBinary(ImagePlus imp) {
+	public static boolean isBinary(ImagePlus imp) {
 		if (imp == null) {
 			IJ.noImage();
 			return false;
