@@ -16,6 +16,8 @@ import ij.process.ImageProcessor;
  * @author Michael Doube
  * */
 public class RoiMan {
+    public static final int NO_SLICE_NUMBER = -1;
+
 	/**
 	 * Get the calibrated 3D coordinates of point ROIs from the ROI manager
 	 * 
@@ -78,11 +80,15 @@ public class RoiMan {
 
 		Roi[] rois = roiMan.getRoisAsArray();
 		for (Roi roi : rois) {
-			int sliceNumber = roiMan.getSliceNumber(roi.getName());
-			if (sliceNumber == -1)
-				sliceNumber = roi.getPosition();
-			if (sliceNumber == s || sliceNumber == 0)
-				roiList.add(roi);
+            String roiName = roi.getName();
+            if (roiName == null) {
+                continue;
+            }
+			int sliceNumber = roiMan.getSliceNumber(roiName);
+            int roiPosition = roi.getPosition();
+			if (sliceNumber == s || sliceNumber == NO_SLICE_NUMBER || roiPosition == s) {
+                roiList.add(roi);
+            }
 		}
 		return roiList;
 	}
@@ -91,37 +97,67 @@ public class RoiMan {
 	 * Find the x, y and z limits of the ROIs in the ROI Manager
 	 * 
 	 * @param roiMan
-	 * @return int[] containing x min, x max, y min, y max, z min and z max, or
-	 *         null if there is no ROI Manager or if the ROI Manager is empty.
+	 * @param stack
+     * @return int[] containing x min, x max, y min, y max, z min and z max.
+     *         Returns null if roiMan == null or if roiMan.getCount() == 0
+     *         Returns null if stack == null
 	 *         If any of the ROIs contains no slice information, z min is set to
 	 *         1 and z max is set to Integer.MAX_VALUE
 	 */
-	public static int[] getLimits(RoiManager roiMan) {
-		if (roiMan == null || roiMan.getCount() == 0)
-			return null;
+	public static int[] getLimits(RoiManager roiMan, ImageStack stack) {
+		if (roiMan == null || roiMan.getCount() == 0) {
+            return null;
+        }
+
+        if (stack == null) {
+            return null;
+        }
+
+        final int LAST_SLIDE = stack.getSize();
+        final int DEFAULT_Z_MIN = 1;
+        final int DEFAULT_Z_MAX = LAST_SLIDE;
+
 		int xmin = Integer.MAX_VALUE;
 		int xmax = 0;
 		int ymin = Integer.MAX_VALUE;
 		int ymax = 0;
-		int zmin = Integer.MAX_VALUE;
-		int zmax = 1;
+		int zmin = DEFAULT_Z_MAX;
+		int zmax = DEFAULT_Z_MIN;
 		boolean noZroi = false;
-		Roi[] rois = roiMan.getRoisAsArray();
+		boolean noValidRois = true;
+        Roi[] rois = roiMan.getRoisAsArray();
+
+
 		for (Roi roi : rois) {
 			Rectangle r = roi.getBounds();
+            boolean valid = getSafeRoiBounds(r, stack.getWidth(), stack.getHeight());
+
+            if (!valid) {
+                continue;
+            }
+
 			xmin = Math.min(r.x, xmin);
 			xmax = Math.max(r.x + r.width, xmax);
 			ymin = Math.min(r.y, ymin);
 			ymax = Math.max(r.y + r.height, ymax);
-			int slice = roiMan.getSliceNumber(roi.getName());
-			if (slice > 0) {
+
+            int slice = roiMan.getSliceNumber(roi.getName());
+			if (slice >= 1 && slice <= LAST_SLIDE) {
 				zmin = Math.min(slice, zmin);
 				zmax = Math.max(slice, zmax);
-			} else
-				noZroi = true; // found a ROI with no Z info
+                noValidRois = false;
+			} else if (isActiveOnAllSlices(slice)) {
+                noZroi = true; // found a ROI with no Z info
+                noValidRois = false;
+            }
 		}
+
+        if (noValidRois) {
+            return null;
+        }
+
 		if (noZroi) {
-			int[] limits = { xmin, xmax, ymin, ymax, 1, Integer.MAX_VALUE };
+			int[] limits = { xmin, xmax, ymin, ymax, DEFAULT_Z_MIN, DEFAULT_Z_MAX };
 			return limits;
 		} else {
 			int[] limits = { xmin, xmax, ymin, ymax, zmin, zmax };
@@ -129,7 +165,41 @@ public class RoiMan {
 		}
 	}
 
-	/**
+    public static boolean isActiveOnAllSlices(RoiManager roiManager, Roi roi) {
+        if (roi.getName() == null) {
+            return false;
+        }
+
+        int sliceNumber = roiManager.getSliceNumber(roi.getName());
+        return isActiveOnAllSlices(sliceNumber);
+    }
+
+    /**
+     * Crops the given rectangle to the area [0, 0, width, height]
+     *
+     * @param bounds
+     *            The rectangle to be fitted
+     * @param width
+     *            Maximum width of the rectangle
+     * @param height
+     *            Maximum height of the rectangle
+     * @return false if the height or width of the fitted rectangle is 0
+     *         (Couldn't be cropped inside the area).
+     */
+    public static boolean getSafeRoiBounds(Rectangle bounds, int width, int height) {
+        int xMin = clamp(bounds.x, 0, width);
+        int xMax = clamp(bounds.x + bounds.width, 0, width);
+        int yMin = clamp(bounds.y, 0, height);
+        int yMax = clamp(bounds.y + bounds.height, 0, height);
+        int newWidth = xMax - xMin;
+        int newHeight = yMax - yMin;
+
+        bounds.setBounds(xMin, yMin, newWidth, newHeight);
+
+        return newWidth > 0 && newHeight > 0;
+    }
+
+    /**
 	 * Crop a stack to the limits of the ROIs in the ROI Manager and optionally
 	 * fill the background with a single pixel value.
 	 * 
@@ -147,7 +217,7 @@ public class RoiMan {
 	 */
 	public static ImageStack cropStack(RoiManager roiMan, ImageStack stack,
 			boolean fillBackground, int fillValue, int padding) {
-		int[] limits = getLimits(roiMan);
+		int[] limits = getLimits(roiMan, stack);
 		final int xmin = limits[0];
 		final int xmax = limits[1];
 		final int ymin = limits[2];
@@ -214,4 +284,18 @@ public class RoiMan {
 			roiMan.runCommand("delete");
 		}
 	}
+
+    private static int clamp(int value, int min, int max) {
+        if (Integer.compare(value, min) < 0) {
+            return min;
+        }
+        if (Integer.compare(value, max) > 0) {
+            return max;
+        }
+        return value;
+    }
+
+    private static boolean isActiveOnAllSlices(int sliceNumber) {
+        return sliceNumber == NO_SLICE_NUMBER;
+    }
 }
