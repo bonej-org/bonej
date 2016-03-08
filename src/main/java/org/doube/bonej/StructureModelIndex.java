@@ -1,5 +1,3 @@
-package org.doube.bonej;
-
 /**
  *  StructureModelIndex Copyright 2010 2015 2016 Michael Doube
  *
@@ -16,6 +14,7 @@ package org.doube.bonej;
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.doube.bonej;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
