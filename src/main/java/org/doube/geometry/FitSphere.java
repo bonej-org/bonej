@@ -1,5 +1,7 @@
 package org.doube.geometry;
 
+import Jama.Matrix;
+
 /**
  * FitSphere class for ImageJ
  * Copyright 2009 2010 Michael Doube
@@ -18,7 +20,6 @@ package org.doube.geometry;
  *along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.doube.jama.Matrix;
 
 /**
  * <p>

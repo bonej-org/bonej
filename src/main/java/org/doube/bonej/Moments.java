@@ -26,10 +26,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import org.doube.jama.EigenvalueDecomposition;
-import org.doube.jama.Matrix;
 import org.doube.util.DialogModifier;
 import org.doube.util.ImageCheck;
+import org.doube.util.MatrixUtils;
 import org.doube.util.ResultInserter;
 import org.doube.util.ThresholdGuesser;
 import org.doube.util.UsageReporter;
@@ -51,6 +50,10 @@ import ij3d.Image3DUniverse;
 
 import org.scijava.vecmath.Color3f;
 import org.scijava.vecmath.Point3f;
+
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
+
 /**
  * Calculate centroid and principal axes of a thresholded stack; originally
  * designed for 16-bit CT scans of a bone in air so default thresholds are 0 and
@@ -371,9 +374,10 @@ public class Moments implements PlugIn, DialogListener {
 		final Matrix inertiaTensorMatrix = new Matrix(inertiaTensor);
 
 		// do the Eigenvalue decomposition
-		final EigenvalueDecomposition E = new EigenvalueDecomposition(inertiaTensorMatrix);
-		E.getD().printToIJLog("Eigenvalues");
-		E.getV().printToIJLog("Eigenvectors");
+		final EigenvalueDecomposition E = new EigenvalueDecomposition(
+				inertiaTensorMatrix);
+		MatrixUtils.printToIJLog(E.getD(), "Eigenvalues");
+		MatrixUtils.printToIJLog(E.getV(), "Eigenvectors");
 
 		final double[] moments = { sumVoxVol, sumVoxMass, Icxx, Icyy, Iczz, Icxy, Icxz, Icyz };
 		final Object[] result = { E, moments };
@@ -434,7 +438,7 @@ public class Moments implements PlugIn, DialogListener {
 		final int hi = sides[1];
 		final int di = sides[2];
 
-		E.printToIJLog("Original Rotation Matrix (Source -> Target)");
+		MatrixUtils.printToIJLog(E, "Original Rotation Matrix (Source -> Target)");
 		Matrix rotation = new Matrix(new double[3][3]);
 
 		// put long axis in z, middle axis in y and short axis in x
@@ -461,13 +465,13 @@ public class Moments implements PlugIn, DialogListener {
 			rotation = E;
 		}
 		// Check for z-flipping
-		if (rotation.isZFlipped()) {
+		if (MatrixUtils.isZFlipped(rotation)) {
 			rotation = rotation.times(RotX).times(RotX);
 			IJ.log("Corrected Z-flipping");
 		}
 
 		// Check for reflection
-		if (!rotation.isRightHanded()) {
+		if (!MatrixUtils.isRightHanded(rotation)) {
 			final double[][] reflectY = new double[3][3];
 			reflectY[0][0] = -1;
 			reflectY[1][1] = 1;
@@ -476,10 +480,10 @@ public class Moments implements PlugIn, DialogListener {
 			rotation = rotation.times(RefY);
 			IJ.log("Reflected the rotation matrix");
 		}
-		rotation.printToIJLog("Rotation Matrix (Source -> Target)");
+		MatrixUtils.printToIJLog(rotation, "Rotation Matrix (Source -> Target)");
 
 		final Matrix eVecInv = rotation.inverse();
-		eVecInv.printToIJLog("Inverse Rotation Matrix (Target -> Source)");
+		MatrixUtils.printToIJLog(eVecInv, "Inverse Rotation Matrix (Target -> Source)");
 		final double[][] eigenVecInv = eVecInv.getArrayCopy();
 
 		// create the target stack

@@ -29,15 +29,16 @@ import org.doube.geometry.FitCircle;
 import org.doube.geometry.FitSphere;
 import org.doube.geometry.Trig;
 import org.doube.geometry.Vectors;
-import org.doube.jama.Matrix;
-import org.doube.jama.SingularValueDecomposition;
 import org.doube.util.DialogModifier;
 import org.doube.util.ImageCheck;
+import org.doube.util.MatrixUtils;
 import org.doube.util.ResultInserter;
 import org.doube.util.RoiMan;
 import org.doube.util.ThresholdGuesser;
 import org.doube.util.UsageReporter;
 
+import Jama.Matrix;
+import Jama.SingularValueDecomposition;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -217,7 +218,7 @@ public class NeckShaftAngle implements PlugIn, MouseListener, DialogListener {
 		cHVec[2][0] = (headCentre[2] - centroid[2]) / d;
 
 		final Matrix cH = new Matrix(cHVec);
-		cH.printToIJLog("cHVec");
+		MatrixUtils.printToIJLog(cH, "cHVec");
 
 		// projectionPlane is the cross product of cHVec and shaftVector
 		final double[][] projectionPlane = Vectors.crossProduct(cHVec, shaftVector);
@@ -306,10 +307,11 @@ public class NeckShaftAngle implements PlugIn, MouseListener, DialogListener {
 		C[2][1] = sDyDz;
 		final double invCount = 1 / count;
 		final Matrix covarianceMatrix = new Matrix(C).times(invCount);
-		covarianceMatrix.printToIJLog("Covariance matrix");
-		final SingularValueDecomposition S = new SingularValueDecomposition(covarianceMatrix);
+		MatrixUtils.printToIJLog(covarianceMatrix, "Covariance matrix");
+		final SingularValueDecomposition S = new SingularValueDecomposition(
+				covarianceMatrix);
 		final Matrix leftVectors = S.getU();
-		leftVectors.printToIJLog("Left vectors");
+		MatrixUtils.printToIJLog(leftVectors, "Left vectors");
 		final double[][] orthogonalDistanceRegression = new double[3][1];
 		orthogonalDistanceRegression[0][0] = leftVectors.get(0, 0);
 		orthogonalDistanceRegression[1][0] = leftVectors.get(1, 0);
@@ -336,16 +338,16 @@ public class NeckShaftAngle implements PlugIn, MouseListener, DialogListener {
 		// P . Q = ||P|| ||Q|| cos(a) so if P and Q are unit vectors, then P.Q =
 		// cos(a)
 		final Matrix PP = new Matrix(projectionPlane);
-		PP.printToIJLog("projectionPlane");
+		MatrixUtils.printToIJLog(PP, "projectionPlane");
 
 		final Matrix tV = new Matrix(testVector);
-		tV.printToIJLog("testVector");
+		MatrixUtils.printToIJLog(tV, "testVector");
 
 		final Matrix sV = new Matrix(shaftVector);
-		sV.printToIJLog("shaftVector");
+		MatrixUtils.printToIJLog(sV, "shaftVector");
 
 		final Matrix nV = new Matrix(neckVector);
-		nV.printToIJLog("neckVector");
+		MatrixUtils.printToIJLog(nV, "neckVector");
 
 		final double cosA1 = sV.get(0, 0) * tV.get(0, 0) + sV.get(1, 0) * tV.get(1, 0) + sV.get(2, 0) * tV.get(2, 0);
 		// printMatrix(cosA1, "cosA1");

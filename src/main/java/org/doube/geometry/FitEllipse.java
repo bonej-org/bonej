@@ -1,5 +1,10 @@
 package org.doube.geometry;
 
+import org.doube.util.MatrixUtils;
+
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
+
 /**
  *  FitEllipse Copyright 2009 2010 Michael Doube
  *
@@ -17,8 +22,6 @@ package org.doube.geometry;
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.doube.jama.EigenvalueDecomposition;
-import org.doube.jama.Matrix;
 
 /**
  * Ellipse-fitting methods.
@@ -253,7 +256,7 @@ public class FitEllipse {
 		final Matrix D = E.getD();
 
 		// [Dsort,ID] = sort(diag(D));
-		final double[] ds = D.diag().getColumnPackedCopy();
+		final double[] ds = MatrixUtils.diag(D).getColumnPackedCopy();
 		int j = 0;
 		for (int i = 0; i < ds.length; i++) {
 			if (ds[i] < ds[j]) {

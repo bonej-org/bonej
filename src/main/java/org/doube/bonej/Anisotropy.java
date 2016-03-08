@@ -17,6 +17,24 @@
  */
 package org.doube.bonej;
 
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.process.ImageProcessor;
+import ij.plugin.PlugIn;
+import ij.gui.*;
+import ij.macro.Interpreter;
+import ij.measure.Calibration;
+
+// for 3D plotting of coordinates
+import org.scijava.vecmath.Point3f;
+
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
+
+import org.scijava.vecmath.Color3f;
+import customnode.CustomPointMesh;
+
 import java.awt.AWTEvent;
 import java.awt.Checkbox;
 import java.awt.TextField;
@@ -30,30 +48,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.doube.geometry.FitEllipsoid;
 import org.doube.geometry.Vectors;
-import org.doube.jama.EigenvalueDecomposition;
-import org.doube.jama.Matrix;
 import org.doube.util.DialogModifier;
 import org.doube.util.ImageCheck;
+import org.doube.util.MatrixUtils;
 import org.doube.util.Multithreader;
 import org.doube.util.ResultInserter;
 import org.doube.util.UsageReporter;
 
-import customnode.CustomPointMesh;
-
-import ij.IJ;
-import ij.ImagePlus;
-import ij.ImageStack;
 import ij.gui.DialogListener;
 import ij.gui.GenericDialog;
 import ij.gui.Plot;
-import ij.macro.Interpreter;
-import ij.measure.Calibration;
-import ij.plugin.PlugIn;
-import ij.process.ImageProcessor;
 
 // for 3D plotting of coordinates
-import org.scijava.vecmath.Point3f;
-import org.scijava.vecmath.Color3f;
 
 import ij3d.Image3DUniverse;
 import ij3d.Content;
@@ -164,11 +170,11 @@ public class Anisotropy implements PlugIn, DialogListener {
 		ri.setResultInRow(imp, "DA", da);
 		ri.setResultInRow(imp, "tDA", Math.pow(1 - da, -1));
 
-		if (doEigens) {
+		if (doEigens){
 			final EigenvalueDecomposition E = (EigenvalueDecomposition) result[2];
 			final Matrix eVectors = E.getV();
-			eVectors.printToIJLog("Fabric tensor vectors");
-			E.getD().printToIJLog("Fabric tensor values");
+			MatrixUtils.printToIJLog(eVectors, "Fabric tensor vectors");
+			MatrixUtils.printToIJLog(E.getD(), "Fabric tensor values");
 			final double[] eValues = E.getRealEigenvalues();
 			for (int i = 0; i < 3; i++)
 				for (int j = 0; j < 3; j++)
@@ -718,12 +724,12 @@ public class Anisotropy implements PlugIn, DialogListener {
 			da = Math.random();
 		}
 		final double[] coEf = (double[]) ellipsoid[3];
-		final double[][] tensor = { { coEf[0], coEf[3], coEf[4] }, { coEf[3], coEf[1], coEf[5] },
-				{ coEf[4], coEf[5], coEf[2] } };
+		final double[][] tensor = { { coEf[0], coEf[3], coEf[4] },
+				{ coEf[3], coEf[1], coEf[5] }, { coEf[4], coEf[5], coEf[2] } };
 		final Matrix M = new Matrix(tensor);
 		final EigenvalueDecomposition E = M.eig();
 		final Matrix EigenVal = E.getD();
-		final double[] diag = EigenVal.diag().getColumnPackedCopy();
+		final double[] diag = MatrixUtils.diag(EigenVal).getColumnPackedCopy();
 		da = 1 - diag[0] / diag[2];
 		if (da > 1)
 			da = 1;

@@ -1,7 +1,7 @@
 package org.doube.geometry;
 
-import org.doube.jama.EigenvalueDecomposition;
-import org.doube.jama.Matrix;
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
 
 public class EigenCalculator {
 

@@ -33,9 +33,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.scijava.vecmath.Color3f;
 import org.scijava.vecmath.Point3f;
 
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
+
 import org.doube.geometry.FitEllipsoid;
-import org.doube.jama.EigenvalueDecomposition;
-import org.doube.jama.Matrix;
 import org.doube.util.DialogModifier;
 import org.doube.util.ImageCheck;
 import org.doube.util.Multithreader;

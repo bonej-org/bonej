@@ -1,5 +1,10 @@
 package org.doube.geometry;
 
+import org.doube.util.MatrixUtils;
+
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
+
 /**
  *  FitEllipsoid Copyright 2009 2010 Michael Doube
  *
@@ -18,9 +23,6 @@ package org.doube.geometry;
  */
 
 //import ij.IJ;
-
-import org.doube.jama.EigenvalueDecomposition;
-import org.doube.jama.Matrix;
 
 /**
  * Ellipsoid fitting methods. Both rely on eigenvalue decomposition, which fails
@@ -116,9 +118,9 @@ public class FitEllipsoid {
 
 		final EigenvalueDecomposition E = new EigenvalueDecomposition(Eq15);
 		final Matrix eigenValues = E.getD();
-		eigenValues.printToIJLog("eigenValues");
+		MatrixUtils.printToIJLog(eigenValues, "eigenValues");
 		final Matrix eigenVectors = E.getV();
-		eigenVectors.printToIJLog("eigenVectors");
+		MatrixUtils.printToIJLog(eigenVectors, "eigenVectors");
 		Matrix v1 = new Matrix(6, 1);
 		final double[][] EigenValueMatrix = eigenValues.getArray();
 		double posVal = 1 - Double.MAX_VALUE;
@@ -129,9 +131,9 @@ public class FitEllipsoid {
 				v1 = eigenVectors.getMatrix(0, 5, p, p);
 			}
 		}
-		v1.printToIJLog("v1");
+		MatrixUtils.printToIJLog(v1, "v1");
 		final Matrix v2 = S22.inverse().times(S12.transpose()).times(v1).times(-1);
-		v2.printToIJLog("v2");
+		MatrixUtils.printToIJLog(v2, "v2");
 		final Matrix v = new Matrix(10, 1);
 		final int[] c = { 0 };
 		v.setMatrix(0, 5, c, v1);
@@ -188,8 +190,9 @@ public class FitEllipsoid {
 
 		// do the fitting
 		final Matrix D = new Matrix(d);
-		final Matrix ones = Matrix.ones(nPoints, 1);
-		final Matrix V = ((D.transpose().times(D)).inverse()).times(D.transpose().times(ones));
+		final Matrix ones = MatrixUtils.ones(nPoints, 1);
+		final Matrix V = ((D.transpose().times(D)).inverse()).times(D.transpose()
+				.times(ones));
 
 		// the fitted equation
 		final double[] v = V.getColumnPackedCopy();
@@ -199,7 +202,7 @@ public class FitEllipsoid {
 		// pack data up for returning
 		final EigenvalueDecomposition E = (EigenvalueDecomposition) matrices[3];
 		final Matrix eVal = E.getD();
-		final Matrix diagonal = eVal.diag();
+		final Matrix diagonal = MatrixUtils.diag(eVal);
 		final int nEvals = diagonal.getRowDimension();
 		final double[] radii = new double[nEvals];
 		for (int i = 0; i < nEvals; i++) {
@@ -269,13 +272,13 @@ public class FitEllipsoid {
 		inertiaTensor[2][0] = -Icxz / nPoints;
 		inertiaTensor[2][1] = -Icyz / nPoints;
 		final Matrix inertiaTensorMatrix = new Matrix(inertiaTensor);
-		inertiaTensorMatrix.printToIJLog("Inertia tensor");
+		MatrixUtils.printToIJLog(inertiaTensorMatrix, "Inertia tensor");
 
 		// do the Eigenvalue decomposition
 		final EigenvalueDecomposition E = new EigenvalueDecomposition(inertiaTensorMatrix);
 
-		E.getD().printToIJLog("Eigenvalues");
-		E.getV().printToIJLog("Eigenvectors");
+		MatrixUtils.printToIJLog(E.getD(), "Eigenvalues");
+		MatrixUtils.printToIJLog(E.getV(), "Eigenvectors");
 		final double I1 = E.getD().get(2, 2);
 		final double I2 = E.getD().get(1, 1);
 		final double I3 = E.getD().get(0, 0);

@@ -1,7 +1,9 @@
 package org.doube.geometry;
 
-import org.doube.jama.EigenvalueDecomposition;
-import org.doube.jama.Matrix;
+import org.doube.util.MatrixUtils;
+
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
 
 /**
  * <p>
@@ -582,7 +584,7 @@ public class Ellipsoid {
 
 		// using the centre and 4x4 calculate the
 		// eigendecomposition
-		final Matrix T = Matrix.eye(4);
+		final Matrix T = MatrixUtils.eye(4);
 		T.setMatrix(3, 3, 0, 2, C.transpose());
 		final Matrix R = T.times(A.times(T.transpose()));
 		final double r33 = R.get(3, 3);
