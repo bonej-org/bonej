@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.scijava.vecmath.Point3f;
-
-import org.doube.skeleton.Skeletonize3D;
-
 import ij.ImagePlus;
 import ij.ImageStack;
+import org.doube.util.SkeletonUtils;
+
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 

@@ -29,29 +29,30 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.scijava.vecmath.Color3f;
 import org.scijava.vecmath.Point3f;
 
-import org.doube.geometry.Ellipsoid;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.plugin.PlugIn;
+import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
+import ij.gui.GenericDialog;
+import ij.gui.Plot;
+import ij.measure.Calibration;
+//import ij.measure.ResultsTable;
+import ij3d.Image3DUniverse;
+
 import org.doube.geometry.Trig;
 import org.doube.geometry.Vectors;
-import org.doube.skeleton.Skeletonize3D;
+import org.doube.geometry.Ellipsoid;
 import org.doube.util.ArrayHelper;
 import org.doube.util.ImageCheck;
 import org.doube.util.Multithreader;
+import org.doube.util.SkeletonUtils;
 //import org.doube.util.ResultInserter;
 import org.doube.util.UsageReporter;
 
 import customnode.CustomLineMesh;
 import customnode.CustomPointMesh;
-import ij.IJ;
-import ij.ImagePlus;
-import ij.ImageStack;
-import ij.gui.GenericDialog;
-import ij.gui.Plot;
-import ij.measure.Calibration;
-import ij.plugin.PlugIn;
-import ij.process.FloatProcessor;
-import ij.process.ImageProcessor;
-//import ij.measure.ResultsTable;
-import ij3d.Image3DUniverse;
 
 /**
  * <p>
@@ -1574,8 +1575,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 	}
 
 	private int[][] skeletonPoints(final ImagePlus imp) {
-		final Skeletonize3D sk = new Skeletonize3D();
-		final ImagePlus skeleton = sk.getSkeleton(imp);
+		final ImagePlus skeleton = SkeletonUtils.getSkeleton(imp);
 		final ImageStack skeletonStack = skeleton.getStack();
 
 		final int d = imp.getStackSize();

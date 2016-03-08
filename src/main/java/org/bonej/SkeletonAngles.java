@@ -29,6 +29,7 @@ import org.doube.skeleton.Point;
 import org.doube.skeleton.Skeletonize3D;
 import org.doube.skeleton.Vertex;
 import org.doube.util.ResultInserter;
+import org.doube.util.SkeletonUtils;
 import org.doube.util.UsageReporter;
 
 import ij.IJ;
