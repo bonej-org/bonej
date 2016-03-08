@@ -6,8 +6,9 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 
-import org.doube.skeleton.Point;
 import org.junit.Test;
+
+import sc.fiji.analyzeSkeleton.Point;
 
 public class CentroidTest {
 

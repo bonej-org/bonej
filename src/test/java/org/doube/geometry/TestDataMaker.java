@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.scijava.vecmath.Point3f;
+
 import ij.ImagePlus;
 import ij.ImageStack;
 import org.doube.util.SkeletonUtils;
@@ -146,8 +147,7 @@ public class TestDataMaker {
 		ip.drawLine(size / 2, size / 4, size / 2, 3 * size / 4);
 		ip.drawLine(size / 4, size / 2, 3 * size / 4, size / 2);
 		final ImagePlus imp = new ImagePlus("crossed-circle", ip);
-		final Skeletonize3D skel = new Skeletonize3D();
-		return skel.getSkeleton(imp);
+		return SkeletonUtils.getSkeleton(imp);
 	}
 
 	/**

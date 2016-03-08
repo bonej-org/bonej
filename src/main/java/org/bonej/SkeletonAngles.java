@@ -22,12 +22,6 @@ import java.util.ArrayList;
 
 import org.doube.geometry.Centroid;
 import org.doube.geometry.Trig;
-import org.doube.skeleton.AnalyzeSkeleton;
-import org.doube.skeleton.Edge;
-import org.doube.skeleton.Graph;
-import org.doube.skeleton.Point;
-import org.doube.skeleton.Skeletonize3D;
-import org.doube.skeleton.Vertex;
 import org.doube.util.ResultInserter;
 import org.doube.util.SkeletonUtils;
 import org.doube.util.UsageReporter;
@@ -37,6 +31,12 @@ import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
+import sc.fiji.analyzeSkeleton.AnalyzeSkeleton_;
+import sc.fiji.analyzeSkeleton.Edge;
+import sc.fiji.analyzeSkeleton.Graph;
+import sc.fiji.analyzeSkeleton.Point;
+import sc.fiji.analyzeSkeleton.Vertex;
+import sc.fiji.skeletonize3D.Skeletonize3D_;
 
 public class SkeletonAngles implements PlugIn {
 
@@ -108,10 +108,9 @@ public class SkeletonAngles implements PlugIn {
 	 *         calculated
 	 */
 	public double[][][] calculateTriplePointAngles(final ImagePlus imp, final int nthPixel) {
-		final Skeletonize3D skeletonizer = new Skeletonize3D();
-		final ImagePlus skeletonizedImage = skeletonizer.getSkeleton(imp);
+		final ImagePlus skeletonizedImage = SkeletonUtils.getSkeleton(imp);
 
-		final AnalyzeSkeleton skeletonAnalyzer = new AnalyzeSkeleton();
+		final AnalyzeSkeleton_ skeletonAnalyzer = new AnalyzeSkeleton_();
 		skeletonAnalyzer.setup("", skeletonizedImage);
 		skeletonAnalyzer.run();
 		final Graph[] graphs = skeletonAnalyzer.getGraphs();
