@@ -41,6 +41,8 @@ import ij.measure.CurveFitter;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import process3d.Dilate_;
+import process3d.Erode_;
 
 public class ThresholdMinConn implements PlugIn, DialogListener {
 
@@ -313,16 +315,16 @@ public class ThresholdMinConn implements PlugIn, DialogListener {
 			if (!imp3.isInvertedLut())
 				IJ.run("Invert LUT");
 			final Purify p = new Purify();
-			final Erode e = new Erode();
-			final Dilate d = new Dilate();
+			final Erode_ e = new Erode_();
+			final Dilate_ d = new Dilate_();
 			final int labelMethod = ParticleCounter.MULTI;
 			replaceImage(imp3, p.purify(imp3, 4, labelMethod));
 			for (int j = 0; j < nErodes; j++)
-				replaceImage(imp3, e.erode(imp3, 255));
+				replaceImage(imp3, e.erode(imp3, 255, false));
 			if (nErodes > 0)
 				replaceImage(imp3, p.purify(imp3, 4, labelMethod));
 			for (int j = 0; j < nDilates; j++)
-				replaceImage(imp3, d.dilate(imp3, 255));
+				replaceImage(imp3, d.dilate(imp3, 255, false));
 
 			// get the connectivity
 			final Connectivity con = new Connectivity();

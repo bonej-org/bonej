@@ -37,6 +37,7 @@ import ij.plugin.PlugIn;
 import ij3d.Image3DUniverse;
 import isosurface.MeshEditor;
 import marchingcubes.MCTriangulator;
+import process3d.Dilate_;
 
 /**
  * <p>Calculates the structure model index (SMI), a measure of how plate-like or
@@ -165,8 +166,8 @@ public class StructureModelIndex implements PlugIn {
 		final double s1 = MeasureSurface.getSurfaceArea(surface.getMesh());
 
 		IJ.showStatus("Dilating voxel model...");
-		final Dilate d = new Dilate();
-		final ImagePlus imp2 = d.dilate(imp, 255);
+		final Dilate_ d = new Dilate_();
+		final ImagePlus imp2 = d.dilate(imp, 255, false);
 
 		IJ.showStatus("Finding surface points...");
 		points = mct.getTriangles(imp2, threshold, channels, voxelResampling);
