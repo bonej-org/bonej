@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.vecmath.Color3f;
-import javax.vecmath.Point3f;
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 
 import org.doube.geometry.Ellipsoid;
 import org.doube.geometry.Trig;

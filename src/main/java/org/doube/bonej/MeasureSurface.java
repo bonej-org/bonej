@@ -27,8 +27,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
 
-import javax.vecmath.Color3f;
-import javax.vecmath.Point3f;
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 
 import org.doube.geometry.Vectors;
 import org.doube.util.ImageCheck;

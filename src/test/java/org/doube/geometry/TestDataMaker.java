@@ -3,7 +3,7 @@ package org.doube.geometry;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Point3f;
+import org.scijava.vecmath.Point3f;
 
 import org.doube.skeleton.Skeletonize3D;
 

@@ -1,26 +1,3 @@
-package org.doube.bonej;
-
-import java.awt.AWTEvent;
-import java.awt.Checkbox;
-import java.awt.Rectangle;
-import java.awt.TextField;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Vector;
-
-import javax.vecmath.Color3f;
-import javax.vecmath.Point3f;
-
-import org.doube.jama.EigenvalueDecomposition;
-import org.doube.jama.Matrix;
-import org.doube.util.DialogModifier;
-import org.doube.util.ImageCheck;
-import org.doube.util.ResultInserter;
-import org.doube.util.ThresholdGuesser;
-import org.doube.util.UsageReporter;
-
-import customnode.CustomPointMesh;
 
 /** Moments ImageJ plugin Copyright 2008 2009 2010 Michael Doube
  *
@@ -38,6 +15,26 @@ import customnode.CustomPointMesh;
  *along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+package org.doube.bonej;
+
+import java.awt.AWTEvent;
+import java.awt.Checkbox;
+import java.awt.Rectangle;
+import java.awt.TextField;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
+
+import org.doube.jama.EigenvalueDecomposition;
+import org.doube.jama.Matrix;
+import org.doube.util.DialogModifier;
+import org.doube.util.ImageCheck;
+import org.doube.util.ResultInserter;
+import org.doube.util.ThresholdGuesser;
+import org.doube.util.UsageReporter;
+
+import customnode.CustomPointMesh;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -52,6 +49,8 @@ import ij.process.StackConverter;
 import ij3d.Content;
 import ij3d.Image3DUniverse;
 
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 /**
  * Calculate centroid and principal axes of a thresholded stack; originally
  * designed for 16-bit CT scans of a bone in air so default thresholds are 0 and

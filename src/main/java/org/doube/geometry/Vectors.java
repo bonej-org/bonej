@@ -1,6 +1,6 @@
 package org.doube.geometry;
 
-import javax.vecmath.Point3f;
+import org.scijava.vecmath.Point3f;
 
 public class Vectors {
 	/**

@@ -3,7 +3,7 @@ package org.doube.geometry;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import javax.vecmath.Point3f;
+import org.scijava.vecmath.Point3f;
 
 //import org.doube.jama.Matrix;
 import org.junit.Test;

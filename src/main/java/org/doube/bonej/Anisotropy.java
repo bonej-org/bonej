@@ -1,31 +1,3 @@
-package org.doube.bonej;
-
-import java.awt.AWTEvent;
-import java.awt.Checkbox;
-import java.awt.TextField;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.vecmath.Color3f;
-// for 3D plotting of coordinates
-import javax.vecmath.Point3f;
-
-import org.doube.geometry.FitEllipsoid;
-import org.doube.geometry.Vectors;
-import org.doube.jama.EigenvalueDecomposition;
-import org.doube.jama.Matrix;
-import org.doube.util.DialogModifier;
-import org.doube.util.ImageCheck;
-import org.doube.util.Multithreader;
-import org.doube.util.ResultInserter;
-import org.doube.util.UsageReporter;
-
-import customnode.CustomPointMesh;
-
 /**
  *Anisotropy plugin for ImageJ
  *Copyright 2009 2010 2011 2012 Michael Doube
@@ -43,6 +15,30 @@ import customnode.CustomPointMesh;
  *You should have received a copy of the GNU General Public License
  *along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.doube.bonej;
+
+import java.awt.AWTEvent;
+import java.awt.Checkbox;
+import java.awt.TextField;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
+// for 3D plotting of coordinates
+
+import org.doube.geometry.FitEllipsoid;
+import org.doube.geometry.Vectors;
+import org.doube.jama.EigenvalueDecomposition;
+import org.doube.jama.Matrix;
+import org.doube.util.DialogModifier;
+import org.doube.util.ImageCheck;
+import org.doube.util.Multithreader;
+import org.doube.util.ResultInserter;
+import org.doube.util.UsageReporter;
+
+import customnode.CustomPointMesh;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -54,8 +50,14 @@ import ij.macro.Interpreter;
 import ij.measure.Calibration;
 import ij.plugin.PlugIn;
 import ij.process.ImageProcessor;
-import ij3d.Content;
+
+// for 3D plotting of coordinates
+import org.scijava.vecmath.Point3f;
+import org.scijava.vecmath.Color3f;
+
 import ij3d.Image3DUniverse;
+import ij3d.Content;
+
 
 /**
  * <p>
