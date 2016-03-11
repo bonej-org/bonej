@@ -13,12 +13,12 @@ public class MatrixUtils {
 
 	/**
 	 * Get the diagonal of the matrix as a column vector
-	 * 
+	 *
 	 * @return Column vector containing diagonal
 	 */
 	public static Matrix diag(final Matrix matrix) {
 		final int min = Math.min(matrix.getRowDimension(), matrix.getColumnDimension());
-		double[][] diag = new double[min][1];
+		final double[][] diag = new double[min][1];
 		for (int i = 0; i < min; i++) {
 			diag[i][0] = matrix.get(i, i);
 		}
@@ -35,16 +35,16 @@ public class MatrixUtils {
 
 	/**
 	 * Print the Matrix to the ImageJ log
-	 * 
+	 *
 	 * @param title
 	 *            Title of the Matrix
 	 */
-	public static void printToIJLog(final Matrix matrix, String title) {
+	public static void printToIJLog(final Matrix matrix, final String title) {
 		if (!title.isEmpty())
 			IJ.log(title);
-		int nCols = matrix.getColumnDimension();
-		int nRows = matrix.getRowDimension();
-		double[][] eVal = matrix.getArrayCopy();
+		final int nCols = matrix.getColumnDimension();
+		final int nRows = matrix.getRowDimension();
+		final double[][] eVal = matrix.getArrayCopy();
 		for (int r = 0; r < nRows; r++) {
 			String row = "||";
 			for (int c = 0; c < nCols; c++) {
@@ -61,7 +61,7 @@ public class MatrixUtils {
 	 * Check if a 3 x 3 Matrix is right handed. If the matrix is a rotation
 	 * matrix, then right-handedness implies rotation only, while
 	 * left-handedness implies a reflection will be performed.
-	 * 
+	 *
 	 * @return true if the Matrix is right handed, false if it is left handed
 	 */
 	public static boolean isRightHanded(final Matrix matrix) {
@@ -94,7 +94,7 @@ public class MatrixUtils {
 	/**
 	 * Check if a rotation matrix will flip the direction of the z component of
 	 * the original
-	 * 
+	 *
 	 * @return true if the rotation matrix will cause z-flipping
 	 */
 	public static boolean isZFlipped(final Matrix matrix) {
@@ -113,7 +113,7 @@ public class MatrixUtils {
 	/**
 	 * Create an n * n square identity matrix with 1 on the diagonal and 0
 	 * elsewhere
-	 * 
+	 *
 	 * @param n
 	 *            square matrix dimension
 	 * @return n * n identity matrix
@@ -124,13 +124,13 @@ public class MatrixUtils {
 
 	/**
 	 * Create an m * n identity matrix
-	 * 
+	 *
 	 * @param m
 	 * @param n
 	 * @return
 	 */
-	public static Matrix eye(int m, int n) {
-		double[][] eye = new double[m][n];
+	public static Matrix eye(final int m, final int n) {
+		final double[][] eye = new double[m][n];
 		final int min = Math.min(m, n);
 		for (int i = 0; i < min; i++) {
 			eye[i][i] = 1;
@@ -140,7 +140,7 @@ public class MatrixUtils {
 
 	/**
 	 * Create an m * n Matrix filled with 1
-	 * 
+	 *
 	 * @param m
 	 *            number of rows
 	 * @param n
@@ -148,7 +148,7 @@ public class MatrixUtils {
 	 * @return m * n Matrix filled with 1
 	 */
 	public static Matrix ones(final int m, final int n) {
-		double[][] ones = new double[m][n];
+		final double[][] ones = new double[m][n];
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				ones[i][j] = 1;

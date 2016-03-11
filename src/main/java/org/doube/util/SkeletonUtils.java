@@ -15,16 +15,16 @@ public class SkeletonUtils {
 	/**
 	 * Gets a medial axis skeleton from a binary imp using a topology-preserving
 	 * iterative algorithm
-	 * 
+	 *
 	 * @param imp
 	 *            input image
 	 * @return skeletonised image
 	 */
 
-	public static ImagePlus getSkeleton(ImagePlus imp) {
-		ImagePlus imp2 = imp.duplicate();
-		ImageStack stack2 = imp2.getStack();
-		Skeletonize3D_ sk = new Skeletonize3D_();
+	public static ImagePlus getSkeleton(final ImagePlus imp) {
+		final ImagePlus imp2 = imp.duplicate();
+		final ImageStack stack2 = imp2.getStack();
+		final Skeletonize3D_ sk = new Skeletonize3D_();
 
 		// Prepare data
 		sk.prepareData(stack2);

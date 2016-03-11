@@ -53,6 +53,7 @@ import ij.process.ImageProcessor;
  */
 public class SphereFitter implements PlugIn, DialogListener {
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;
@@ -382,6 +383,7 @@ public class SphereFitter implements PlugIn, DialogListener {
 		}
 	}
 
+	@Override
 	public boolean dialogItemChanged(final GenericDialog gd, final AWTEvent e) {
 		if (!DialogModifier.allNumbersValid(gd.getNumericFields()))
 			return false;

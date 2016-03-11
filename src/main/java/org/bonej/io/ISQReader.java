@@ -1,6 +1,5 @@
 package org.bonej.io;
 
-//import java.awt.Checkbox;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -144,6 +143,7 @@ public class ISQReader implements PlugIn {
 	private int bufferSize, byteCount, nPixels;
 	private int eofErrorCount;
 
+	@Override
 	public void run(final String arg) {
 
 		// the ISQ-File is selected

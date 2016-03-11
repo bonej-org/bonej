@@ -21,13 +21,12 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.scijava.vecmath.Color3f;
-import org.scijava.vecmath.Point3f;
-
 import org.doube.geometry.Vectors;
 import org.doube.util.ImageCheck;
 import org.doube.util.ResultInserter;
 import org.doube.util.UsageReporter;
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 
 import customnode.CustomTriangleMesh;
 import ij.IJ;
@@ -40,15 +39,18 @@ import marchingcubes.MCTriangulator;
 import process3d.Dilate_;
 
 /**
- * <p>Calculates the structure model index (SMI), a measure of how plate-like or
- * rod-like a structure is.</p>
+ * <p>
+ * Calculates the structure model index (SMI), a measure of how plate-like or
+ * rod-like a structure is.
+ * </p>
+ *
+ * <p>
+ * Hildebrand T, Rüegsegger P. Quantification of Bone Microarchitecture with the
+ * Structure Model Index. Comput Methods Biomech Biomed Engin 1997;1(1):15-23.
+ * </p>
  * 
- * <p> Hildebrand T, Rüegsegger P. Quantification of Bone Microarchitecture
- * with the Structure Model Index. Comput Methods Biomech Biomed Engin
- * 1997;1(1):15-23.</p>
- *      
  * @author Michael Doube
- * @see	<a href="http://doi.org/10.1080/01495739708936692">doi:
+ * @see <a href="http://doi.org/10.1080/01495739708936692">doi:
  *      10.1080/01495739708936692</a>
  *
  */
@@ -58,6 +60,7 @@ public class StructureModelIndex implements PlugIn {
 	private static List<Point3f> mesh;
 	private static List<Color3f> colours;
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment()) {
 			return;
@@ -195,14 +198,13 @@ public class StructureModelIndex implements PlugIn {
 	 * this class
 	 * </p>
 	 *
-	 *<p>
-	 *      Hildebrand T, Rüegsegger P. Quantification of Bone Microarchitecture
-	 *      with the Structure Model Index. Comput Methods Biomech Biomed Engin
-	 *      1997;1(1):15-23.
-	 *      </p>
+	 * <p>
+	 * Hildebrand T, Rüegsegger P. Quantification of Bone Microarchitecture with
+	 * the Structure Model Index. Comput Methods Biomech Biomed Engin
+	 * 1997;1(1):15-23.
+	 * </p>
 	 *
-	 * @see
-	 * 		<a href="http://dx.doi.org/10.1080/01495739708936692">doi:
+	 * @see <a href="http://dx.doi.org/10.1080/01495739708936692">doi:
 	 *      10.1080/01495739708936692</a>
 	 *
 	 * @param imp

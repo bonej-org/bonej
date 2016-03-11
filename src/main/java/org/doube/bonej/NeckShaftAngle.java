@@ -91,6 +91,7 @@ public class NeckShaftAngle implements PlugIn, MouseListener, DialogListener {
 
 	private boolean fieldUpdated = false;
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;
@@ -155,8 +156,7 @@ public class NeckShaftAngle implements PlugIn, MouseListener, DialogListener {
 			IJ.showMessage(ia.getMessage());
 			return;
 		} catch (final RuntimeException re) {
-			IJ.showMessage(
-				"Can't fit sphere to points.\n" + "Add more point ROI's to the ROI Manager and try again.");
+			IJ.showMessage("Can't fit sphere to points.\n" + "Add more point ROI's to the ROI Manager and try again.");
 			return;
 		}
 		final ImageWindow win = imp.getWindow();
@@ -308,8 +308,7 @@ public class NeckShaftAngle implements PlugIn, MouseListener, DialogListener {
 		final double invCount = 1 / count;
 		final Matrix covarianceMatrix = new Matrix(C).times(invCount);
 		MatrixUtils.printToIJLog(covarianceMatrix, "Covariance matrix");
-		final SingularValueDecomposition S = new SingularValueDecomposition(
-				covarianceMatrix);
+		final SingularValueDecomposition S = new SingularValueDecomposition(covarianceMatrix);
 		final Matrix leftVectors = S.getU();
 		MatrixUtils.printToIJLog(leftVectors, "Left vectors");
 		final double[][] orthogonalDistanceRegression = new double[3][1];
@@ -533,6 +532,7 @@ public class NeckShaftAngle implements PlugIn, MouseListener, DialogListener {
 		return;
 	}
 
+	@Override
 	public void mousePressed(final MouseEvent e) {
 		final ImagePlus imp = IJ.getImage();
 		final Calibration cal = imp.getCalibration();
@@ -544,21 +544,26 @@ public class NeckShaftAngle implements PlugIn, MouseListener, DialogListener {
 		calculateAngles(imp, neckPoint);
 	}
 
+	@Override
 	public void mouseReleased(final MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(final MouseEvent e) {
 	}
 
+	@Override
 	public void mouseClicked(final MouseEvent e) {
 	}
 
+	@Override
 	public void mouseEntered(final MouseEvent e) {
 	}
 
 	public void mouseMoved(final MouseEvent e) {
 	}
 
+	@Override
 	public boolean dialogItemChanged(final GenericDialog gd, final AWTEvent e) {
 		if (!DialogModifier.allNumbersValid(gd.getNumericFields()))
 			return false;

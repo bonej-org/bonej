@@ -3,22 +3,22 @@ package org.doube.util;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.gui.Roi;
 import ij.plugin.PlugIn;
+import ij.plugin.filter.ThresholdToSelection;
+import ij.plugin.frame.RoiManager;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import vib.BinaryInterpolator;
-import ij.gui.Roi;
-import ij.plugin.filter.ThresholdToSelection;
-import ij.plugin.frame.RoiManager;
 
 public class RoiInterpolator implements PlugIn {
 	int[][] idt;
 	int w, h;
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;

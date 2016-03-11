@@ -26,33 +26,31 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.scijava.vecmath.Color3f;
-import org.scijava.vecmath.Point3f;
-
-import ij.IJ;
-import ij.ImagePlus;
-import ij.ImageStack;
-import ij.plugin.PlugIn;
-import ij.process.FloatProcessor;
-import ij.process.ImageProcessor;
-import ij.gui.GenericDialog;
-import ij.gui.Plot;
-import ij.measure.Calibration;
-//import ij.measure.ResultsTable;
-import ij3d.Image3DUniverse;
-
+import org.doube.geometry.Ellipsoid;
 import org.doube.geometry.Trig;
 import org.doube.geometry.Vectors;
-import org.doube.geometry.Ellipsoid;
 import org.doube.util.ArrayHelper;
 import org.doube.util.ImageCheck;
 import org.doube.util.Multithreader;
 import org.doube.util.SkeletonUtils;
 //import org.doube.util.ResultInserter;
 import org.doube.util.UsageReporter;
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 
 import customnode.CustomLineMesh;
 import customnode.CustomPointMesh;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.gui.GenericDialog;
+import ij.gui.Plot;
+import ij.measure.Calibration;
+import ij.plugin.PlugIn;
+import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
+//import ij.measure.ResultsTable;
+import ij3d.Image3DUniverse;
 
 /**
  * <p>
@@ -107,6 +105,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 
 	private double[][] regularVectors;
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;
@@ -258,6 +257,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 
 					for (int i = ai.getAndIncrement(); i < l; i = ai.getAndIncrement()) {
@@ -348,6 +348,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 
 					for (int z = ai.getAndIncrement(); z <= d; z = ai.getAndIncrement()) {
@@ -445,6 +446,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int z = ai.getAndIncrement(); z <= d; z = ai.getAndIncrement()) {
 						IJ.showStatus("Generating EF image");
@@ -491,6 +493,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int z = ai.getAndIncrement(); z <= d; z = ai.getAndIncrement()) {
 						IJ.showStatus("Generating short/middle axis image");
@@ -538,6 +541,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int z = ai.getAndIncrement(); z <= d; z = ai.getAndIncrement()) {
 						IJ.showStatus("Generating volume image");
@@ -585,6 +589,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int z = ai.getAndIncrement(); z <= d; z = ai.getAndIncrement()) {
 						IJ.showStatus("Generating volume image");
@@ -661,6 +666,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int z = ai.getAndIncrement(); z <= d; z = ai.getAndIncrement()) {
 						IJ.showStatus("Finding biggest ellipsoid");
@@ -774,6 +780,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int i = ai.getAndAdd(skipRatio); i < nPoints; i = ai.getAndAdd(skipRatio)) {
 						ellipsoids[i] = optimiseEllipsoid(imp, skeletonPoints[i], unitVectors, i);
@@ -1589,6 +1596,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int z = ai.getAndIncrement(); z <= d; z = ai.getAndIncrement()) {
 						final byte[] slicePixels = (byte[]) skeletonStack.getPixels(z);
@@ -1642,6 +1650,7 @@ public class EllipsoidFactor implements PlugIn, Comparator<Ellipsoid> {
 	 * <b>descending</b> volume.
 	 *
 	 */
+	@Override
 	public int compare(final Ellipsoid o1, final Ellipsoid o2) {
 		return Double.compare(o2.getVolume(), o1.getVolume());
 	}

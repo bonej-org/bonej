@@ -28,15 +28,14 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.scijava.vecmath.Color3f;
-import org.scijava.vecmath.Point3f;
-
 import org.doube.util.DialogModifier;
 import org.doube.util.ImageCheck;
 import org.doube.util.Multithreader;
 import org.doube.util.ResultInserter;
 import org.doube.util.RoiMan;
 import org.doube.util.UsageReporter;
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 
 import customnode.CustomTriangleMesh;
 import ij.IJ;
@@ -55,6 +54,7 @@ import marchingcubes.MCTriangulator;
 
 public class VolumeFraction implements PlugIn, DialogListener {
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;
@@ -151,7 +151,8 @@ public class VolumeFraction implements PlugIn, DialogListener {
 		final RoiManager roiMan = RoiManager.getInstance();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
-					public void run() {
+				@Override
+				public void run() {
 					for (int s = ai.getAndIncrement(); s <= nSlices; s = ai.getAndIncrement()) {
 						final ImageProcessor ipSlice = stack.getProcessor(s);
 						ipSlice.setRoi(imp.getRoi());
@@ -283,6 +284,7 @@ public class VolumeFraction implements PlugIn, DialogListener {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int s = ai.getAndIncrement(); s < di + zm; s = ai.getAndIncrement()) {
 						IJ.showStatus("Creating binary templates...");
@@ -380,6 +382,7 @@ public class VolumeFraction implements PlugIn, DialogListener {
 		return thresholds;
 	}
 
+	@Override
 	public boolean dialogItemChanged(final GenericDialog gd, final AWTEvent e) {
 		if (!DialogModifier.allNumbersValid(gd.getNumericFields()))
 			return false;

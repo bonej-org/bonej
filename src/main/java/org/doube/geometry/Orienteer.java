@@ -28,7 +28,6 @@ import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.doube.util.UsageReporter;
@@ -278,7 +277,7 @@ public class Orienteer extends PlugInFrame
 	}
 
 	private void update() {
-		if (WindowManager.getImageCount() == 0){
+		if (WindowManager.getImageCount() == 0) {
 			instance.setTitle("Orientation - No Images Open");
 			clearHashes();
 			return;
@@ -317,8 +316,8 @@ public class Orienteer extends PlugInFrame
 	 * Keep hash lists up to date by removing keys of closed windows
 	 */
 	private void checkHash() {
-		Set<Integer> idset = thetaHash.keySet();
-		for (Integer i : idset){
+		final Set<Integer> idset = thetaHash.keySet();
+		for (final Integer i : idset) {
 			if (WindowManager.getImage(i.intValue()) == null)
 				clearHashes(i);
 		}
@@ -336,11 +335,11 @@ public class Orienteer extends PlugInFrame
 		centreHash.clear();
 		lengthHash.clear();
 	}
-	
+
 	/**
 	 * Remove a single image ID from the hashes.
 	 */
-	private void clearHashes(Integer i) {
+	private void clearHashes(final Integer i) {
 		thetaHash.remove(i);
 		reflectHash.remove(i);
 		pathHash.remove(i);
@@ -410,7 +409,7 @@ public class Orienteer extends PlugInFrame
 	 */
 	public double getOrientation(final String direction) {
 		if (WindowManager.getImageCount() == 0)
-	         return 0;
+			return 0;
 		final ImagePlus imp = WindowManager.getCurrentImage();
 		return getOrientation(imp, direction);
 	}
@@ -439,7 +438,7 @@ public class Orienteer extends PlugInFrame
 		final Double o = thetaHash.get(id);
 		if (o == null)
 			throw new IllegalArgumentException();
-		
+
 		return o.doubleValue();
 	}
 
@@ -472,7 +471,7 @@ public class Orienteer extends PlugInFrame
 		if (orientation > 2 * Math.PI)
 
 			return orientation - 2 * Math.PI;
-		
+
 		return orientation;
 	}
 
@@ -593,9 +592,9 @@ public class Orienteer extends PlugInFrame
 		instance = null;
 		if (WindowManager.getImageCount() == 0)
 			return;
-		//clear the orientation overlay from open images
-		for (final Integer i : thetaHash.keySet()){
-			  WindowManager.getImage(i.intValue()).setOverlay(null);
+		// clear the orientation overlay from open images
+		for (final Integer i : thetaHash.keySet()) {
+			WindowManager.getImage(i.intValue()).setOverlay(null);
 		}
 	}
 
@@ -606,11 +605,13 @@ public class Orienteer extends PlugInFrame
 		WindowManager.setWindow(this);
 	}
 
+	@Override
 	public void windowClosing(final WindowEvent e) {
 		close();
 		Prefs.saveLocation(LOC_KEY, getLocation());
 	}
 
+	@Override
 	public void adjustmentValueChanged(final AdjustmentEvent e) {
 		if (e.getSource().equals(slider)) {
 			rotateTo(slider.getValue() * Math.PI / 180);
@@ -618,6 +619,7 @@ public class Orienteer extends PlugInFrame
 		}
 	}
 
+	@Override
 	public void itemStateChanged(final ItemEvent e) {
 		boolean isImageOpen = true;
 		if (WindowManager.getImageCount() == 0)
@@ -645,28 +647,29 @@ public class Orienteer extends PlugInFrame
 			axis1 = i;
 			final int[] axes = { axis0, axis1 };
 			if (isImageOpen)
-			    axisHash.put(activeImpID, axes.clone());
+				axisHash.put(activeImpID, axes.clone());
 			updateDirections();
 		} else if (source.equals(reflect0)) {
 			isReflected0 = reflect0.getState();
 			final boolean[] reflectors = { isReflected0, isReflected1 };
 			if (isImageOpen)
-			    reflectHash.put(activeImpID, reflectors.clone());
+				reflectHash.put(activeImpID, reflectors.clone());
 			updateDirections();
 		} else if (source.equals(reflect1)) {
 			isReflected1 = reflect1.getState();
 			final boolean[] reflectors = { isReflected0, isReflected1 };
 			if (isImageOpen)
-			    reflectHash.put(activeImpID, reflectors.clone());
+				reflectHash.put(activeImpID, reflectors.clone());
 			updateDirections();
 		} else if (source.equals(deg) || source.equals(rad)) {
 			final boolean[] units = { deg.getState(), rad.getState() };
 			if (isImageOpen)
-			    unitHash.put(activeImpID, units);
+				unitHash.put(activeImpID, units);
 			updateTextbox();
 		}
 	}
 
+	@Override
 	public void textValueChanged(final TextEvent e) {
 		final TextField field = (TextField) e.getSource();
 		double value = Double.parseDouble(field.getText());
@@ -679,6 +682,7 @@ public class Orienteer extends PlugInFrame
 		rotateTo(value);
 	}
 
+	@Override
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		final int oldPos = slider.getValue();
 		int newPos = oldPos + e.getWheelRotation();

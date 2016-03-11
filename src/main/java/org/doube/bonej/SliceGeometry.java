@@ -32,9 +32,10 @@ import org.doube.util.DialogModifier;
 import org.doube.util.ImageCheck;
 import org.doube.util.ThresholdGuesser;
 import org.doube.util.UsageReporter;
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 
 import customnode.CustomPointMesh;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -53,10 +54,6 @@ import ij.process.ImageProcessor;
 import ij.process.StackConverter;
 import ij3d.Content;
 import ij3d.Image3DUniverse;
-
-
-import org.scijava.vecmath.Color3f;
-import org.scijava.vecmath.Point3f;
 
 /**
  * <p>
@@ -186,6 +183,7 @@ public class SliceGeometry implements PlugIn, DialogListener {
 	/** Use the masked version of thickness, which trims the 1px overhang */
 	private boolean doMask;
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;
@@ -1012,7 +1010,7 @@ public class SliceGeometry implements PlugIn, DialogListener {
 				this.secondaryDiameter[s] = Double.NaN;
 				continue;
 			}
-			
+
 			final int type = Wand.allPoints() ? Roi.FREEROI : Roi.TRACED_ROI;
 			final PolygonRoi roi = new PolygonRoi(w.xpoints, w.ypoints, w.npoints, type);
 			feretValues = roi.getFeretValues();
@@ -1020,7 +1018,7 @@ public class SliceGeometry implements PlugIn, DialogListener {
 			this.feretAngle[s] = feretValues[1] * Math.PI / 180;
 			this.feretMax[s] = feretValues[0] * this.vW;
 			this.perimeter[s] = roi.getLength() * this.vW;
-			
+
 			if (this.doOriented && orienteer != null) {
 				final double[][] points = new double[w.npoints][2];
 				for (int i = 0; i < w.npoints; i++) {
@@ -1038,6 +1036,7 @@ public class SliceGeometry implements PlugIn, DialogListener {
 		return;
 	}
 
+	@Override
 	public boolean dialogItemChanged(final GenericDialog gd, final AWTEvent e) {
 		if (!DialogModifier.allNumbersValid(gd.getNumericFields()))
 			return false;

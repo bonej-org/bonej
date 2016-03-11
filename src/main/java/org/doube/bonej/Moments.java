@@ -32,9 +32,12 @@ import org.doube.util.MatrixUtils;
 import org.doube.util.ResultInserter;
 import org.doube.util.ThresholdGuesser;
 import org.doube.util.UsageReporter;
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
 import customnode.CustomPointMesh;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -47,12 +50,6 @@ import ij.process.ImageProcessor;
 import ij.process.StackConverter;
 import ij3d.Content;
 import ij3d.Image3DUniverse;
-
-import org.scijava.vecmath.Color3f;
-import org.scijava.vecmath.Point3f;
-
-import Jama.EigenvalueDecomposition;
-import Jama.Matrix;
 
 /**
  * Calculate centroid and principal axes of a thresholded stack; originally
@@ -67,6 +64,7 @@ public class Moments implements PlugIn, DialogListener {
 	private boolean fieldUpdated = false;
 	private Calibration cal;
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;
@@ -344,7 +342,7 @@ public class Moments implements PlugIn, DialogListener {
 					final double testPixel = ip.get(x, y);
 					if (testPixel < min || testPixel > max) {
 						continue;
-					} 
+					}
 					sumVoxVol += voxVol;
 					final double voxMass = voxelDensity(testPixel, m, c, factor) * voxVol;
 					sumVoxMass += voxMass;
@@ -374,8 +372,7 @@ public class Moments implements PlugIn, DialogListener {
 		final Matrix inertiaTensorMatrix = new Matrix(inertiaTensor);
 
 		// do the Eigenvalue decomposition
-		final EigenvalueDecomposition E = new EigenvalueDecomposition(
-				inertiaTensorMatrix);
+		final EigenvalueDecomposition E = new EigenvalueDecomposition(inertiaTensorMatrix);
 		MatrixUtils.printToIJLog(E.getD(), "Eigenvalues");
 		MatrixUtils.printToIJLog(E.getV(), "Eigenvectors");
 
@@ -915,6 +912,7 @@ public class Moments implements PlugIn, DialogListener {
 		return;
 	}
 
+	@Override
 	public boolean dialogItemChanged(final GenericDialog gd, final AWTEvent e) {
 		if (!DialogModifier.allNumbersValid(gd.getNumericFields()))
 			return false;

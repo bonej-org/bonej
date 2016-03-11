@@ -263,7 +263,7 @@ public class ImageCheck {
 			final String message = "You might not have enough memory to run this job.\n" + "Do you want to continue?";
 			if (IJ.showMessageWithCancel("Memory Warning", message))
 				return true;
-			
+
 			return false;
 		}
 		return true;
@@ -301,7 +301,7 @@ public class ImageCheck {
 		if (!cal.calibrated() || cal == null || (cal.getCValue(0) == 0 && coeff[1] == 1)
 				|| (cal.getCValue(0) == Short.MIN_VALUE && coeff[1] == 1))
 			return false;
-		
+
 		return true;
 	}
 

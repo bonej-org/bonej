@@ -161,7 +161,7 @@ public class RoiMan {
 			final int[] limits = { xMin, xMax, yMin, yMax, DEFAULT_Z_MIN, DEFAULT_Z_MAX };
 			return limits;
 		}
-		
+
 		final int[] limits = { xMin, xMax, yMin, yMax, zMin, zMax };
 		return limits;
 	}

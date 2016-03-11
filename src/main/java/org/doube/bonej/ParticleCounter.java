@@ -30,18 +30,16 @@ import java.util.ListIterator;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.scijava.vecmath.Color3f;
-import org.scijava.vecmath.Point3f;
-
-import Jama.EigenvalueDecomposition;
-import Jama.Matrix;
-
 import org.doube.geometry.FitEllipsoid;
 import org.doube.util.DialogModifier;
 import org.doube.util.ImageCheck;
 import org.doube.util.Multithreader;
 import org.doube.util.UsageReporter;
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
 import customnode.CustomPointMesh;
 import customnode.CustomTriangleMesh;
 import ij.IJ;
@@ -123,6 +121,7 @@ public class ParticleCounter implements PlugIn, DialogListener {
 
 	private int labelMethod = MAPPED;
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;
@@ -2432,7 +2431,7 @@ public class ParticleCounter implements PlugIn, DialogListener {
 			final int d) {
 		if (withinBounds(x, y, z, w, h, d))
 			return image[z][x + y * w];
-		
+
 		return 0;
 	} /* end getPixel */
 
@@ -2636,6 +2635,7 @@ public class ParticleCounter implements PlugIn, DialogListener {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int z = ai.getAndIncrement(); z < endZ; z = ai.getAndIncrement()) {
 						for (int i = 0; i < s; i++)
@@ -2734,6 +2734,7 @@ public class ParticleCounter implements PlugIn, DialogListener {
 		return;
 	}
 
+	@Override
 	public boolean dialogItemChanged(final GenericDialog gd, final AWTEvent e) {
 		if (!DialogModifier.allNumbersValid(gd.getNumericFields()))
 			return false;

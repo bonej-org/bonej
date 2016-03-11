@@ -98,6 +98,7 @@ public class Thickness implements PlugIn {
 	private boolean doRoi = ROI_DEFAULT;
 	private boolean doMask = MASK_DEFAULT;
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment()) {
 			return;

@@ -22,8 +22,6 @@ import Jama.Matrix;
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//import ij.IJ;
-
 /**
  * Ellipsoid fitting methods. Both rely on eigenvalue decomposition, which fails
  * if the input matrix is singular. It is worth enclosing calls to yuryPetrov
@@ -191,8 +189,7 @@ public class FitEllipsoid {
 		// do the fitting
 		final Matrix D = new Matrix(d);
 		final Matrix ones = MatrixUtils.ones(nPoints, 1);
-		final Matrix V = ((D.transpose().times(D)).inverse()).times(D.transpose()
-				.times(ones));
+		final Matrix V = ((D.transpose().times(D)).inverse()).times(D.transpose().times(ones));
 
 		// the fitted equation
 		final double[] v = V.getColumnPackedCopy();

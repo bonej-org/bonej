@@ -27,14 +27,13 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
 
-import org.scijava.vecmath.Color3f;
-import org.scijava.vecmath.Point3f;
-
 import org.doube.geometry.Vectors;
 import org.doube.util.ImageCheck;
 import org.doube.util.ResultInserter;
 import org.doube.util.StackStats;
 import org.doube.util.UsageReporter;
+import org.scijava.vecmath.Color3f;
+import org.scijava.vecmath.Point3f;
 
 import customnode.CustomTriangleMesh;
 import ij.IJ;
@@ -55,6 +54,7 @@ import marchingcubes.MCTriangulator;
  */
 public class MeasureSurface implements PlugIn {
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())

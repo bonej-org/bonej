@@ -99,6 +99,7 @@ public class Connectivity implements PlugIn {
 	/** working image depth */
 	private int depth = 0;
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;
@@ -200,6 +201,7 @@ public class Connectivity implements PlugIn {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					long deltaEuler = 0;
 					for (int z = ai.getAndIncrement(); z <= depth; z = ai.getAndIncrement()) {
@@ -289,7 +291,7 @@ public class Connectivity implements PlugIn {
 	private byte getPixel(final ImageStack stack, final int x, final int y, final int z) {
 		if (x >= 0 && x < this.width && y >= 0 && y < this.height && z >= 0 && z < this.depth)
 			return ((byte[]) stack.getPixels(z + 1))[y * this.width + x];
-		
+
 		return 0;
 	} /* end getPixel */
 
@@ -406,9 +408,9 @@ public class Connectivity implements PlugIn {
 	 */
 	private long getStackVertices(final ImageStack stack) {
 		long nStackVertices = 0;
-		int xInc = Math.max(1, width - 1);
-		int yInc = Math.max(1, height - 1);
-		int zInc = Math.max(1, depth - 1);
+		final int xInc = Math.max(1, width - 1);
+		final int yInc = Math.max(1, height - 1);
+		final int zInc = Math.max(1, depth - 1);
 
 		for (int z = 0; z < depth; z += zInc) {
 			for (int y = 0; y < height; y += yInc) {
@@ -431,9 +433,9 @@ public class Connectivity implements PlugIn {
 	 */
 	private long getStackEdges(final ImageStack stack) {
 		long nStackEdges = 0;
-		int xInc = Math.max(1, width - 1);
-		int yInc = Math.max(1, height - 1);
-		int zInc = Math.max(1, depth - 1);
+		final int xInc = Math.max(1, width - 1);
+		final int yInc = Math.max(1, height - 1);
+		final int zInc = Math.max(1, depth - 1);
 
 		// vertex voxels contribute 3 edges
 		// this could be taken out into a variable to avoid recalculating it
@@ -480,9 +482,9 @@ public class Connectivity implements PlugIn {
 	 * @return number of voxel faces intersecting with stack faces
 	 */
 	private long getStackFaces(final ImageStack stack) {
-		int xInc = Math.max(1, width - 1);
-		int yInc = Math.max(1, height - 1);
-		int zInc = Math.max(1, depth - 1);
+		final int xInc = Math.max(1, width - 1);
+		final int yInc = Math.max(1, height - 1);
+		final int zInc = Math.max(1, depth - 1);
 		long nStackFaces = 0;
 
 		// vertex voxels contribute 3 faces
@@ -533,9 +535,9 @@ public class Connectivity implements PlugIn {
 	 * @return Number of voxel vertices intersecting stack faces
 	 */
 	private long getFaceVertices(final ImageStack stack) {
-		int xInc = Math.max(1, width - 1);
-		int yInc = Math.max(1, height - 1);
-		int zInc = Math.max(1, depth - 1);
+		final int xInc = Math.max(1, width - 1);
+		final int yInc = Math.max(1, height - 1);
+		final int zInc = Math.max(1, depth - 1);
 		long nFaceVertices = 0;
 
 		// top and bottom faces (all 4 edges)
@@ -602,9 +604,9 @@ public class Connectivity implements PlugIn {
 	 * @return number of intersections between voxel edges and stack faces
 	 */
 	private long getFaceEdges(final ImageStack stack) {
-		int xInc = Math.max(1, width - 1);
-		int yInc = Math.max(1, height - 1);
-		int zInc = Math.max(1, depth - 1);
+		final int xInc = Math.max(1, width - 1);
+		final int yInc = Math.max(1, height - 1);
+		final int zInc = Math.max(1, depth - 1);
 		long nFaceEdges = 0;
 
 		// top and bottom faces (all 4 edges)
@@ -687,9 +689,9 @@ public class Connectivity implements PlugIn {
 	 * @return number of voxel vertices intersecting stack edges
 	 */
 	private long getEdgeVertices(final ImageStack stack) {
-		int xInc = Math.max(1, width - 1);
-		int yInc = Math.max(1, height - 1);
-		int zInc = Math.max(1, depth - 1);
+		final int xInc = Math.max(1, width - 1);
+		final int yInc = Math.max(1, height - 1);
+		final int zInc = Math.max(1, depth - 1);
 		long nEdgeVertices = 0;
 
 		// vertex voxels contribute 1 edge vertex each

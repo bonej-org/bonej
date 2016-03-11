@@ -3,12 +3,11 @@ package org.doube.geometry;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.doube.util.SkeletonUtils;
 import org.scijava.vecmath.Point3f;
 
 import ij.ImagePlus;
 import ij.ImageStack;
-import org.doube.util.SkeletonUtils;
-
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 

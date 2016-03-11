@@ -40,6 +40,7 @@ import ij.plugin.frame.RoiManager;
  */
 public class EllipsoidFitter implements PlugIn {
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment())
 			return;

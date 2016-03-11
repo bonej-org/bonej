@@ -36,13 +36,13 @@ import sc.fiji.analyzeSkeleton.Edge;
 import sc.fiji.analyzeSkeleton.Graph;
 import sc.fiji.analyzeSkeleton.Point;
 import sc.fiji.analyzeSkeleton.Vertex;
-import sc.fiji.skeletonize3D.Skeletonize3D_;
 
 public class SkeletonAngles implements PlugIn {
 
 	/** Measure angles between vertices */
 	public static final int VERTEX_TO_VERTEX = -1;
 
+	@Override
 	public void run(final String arg) {
 		final ImagePlus imp = WindowManager.getCurrentImage();
 		if (imp == null) {
@@ -187,8 +187,8 @@ public class SkeletonAngles implements PlugIn {
 
 		if (edgePoints.isEmpty()) {
 			// No slabs, edge has only an end-point and a junction point
-			ArrayList<Point> oppositeVertexPoints = edge.getOppositeVertex(vertex).getPoints();
-			Point oppositeVertexCentroid = Centroid.getCentroidPoint(oppositeVertexPoints);
+			final ArrayList<Point> oppositeVertexPoints = edge.getOppositeVertex(vertex).getPoints();
+			final Point oppositeVertexCentroid = Centroid.getCentroidPoint(oppositeVertexPoints);
 			return oppositeVertexCentroid;
 		}
 
@@ -215,10 +215,10 @@ public class SkeletonAngles implements PlugIn {
 
 			return edgePoints.get(edgePoints.size() - 1);
 		}
-		
+
 		if (nthPoint < edgePoints.size())
 			return edgePoints.get(edgePoints.size() - nthPoint - 1);
-		
+
 		return edgePoints.get(0);
 	}
 }

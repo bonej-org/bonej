@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import sc.fiji.analyzeSkeleton.Point;
 
-
 public class Centroid {
 
 	/**
@@ -164,12 +163,13 @@ public class Centroid {
 	/**
 	 * Returns the centroid Point of the given Points
 	 *
-	 * NB Might not be the exact centroid, because Point coordinates are integers.
+	 * NB Might not be the exact centroid, because Point coordinates are
+	 * integers.
 	 *
-	 * @return	The centroid Point
-	 * 			Returns null if the given list is null or empty
+	 * @return The centroid Point Returns null if the given list is null or
+	 *         empty
 	 */
-	public static Point getCentroidPoint(ArrayList<Point> points) {
+	public static Point getCentroidPoint(final ArrayList<Point> points) {
 		if (points == null || points.isEmpty()) {
 			return null;
 		}
@@ -178,16 +178,16 @@ public class Centroid {
 		double ySum = 0.0;
 		double zSum = 0.0;
 
-		for (Point p : points) {
+		for (final Point p : points) {
 			xSum += p.x;
 			ySum += p.y;
 			zSum += p.z;
 		}
 
-		double n = points.size();
-		int x = (int) Math.round(xSum / n);
-		int y = (int) Math.round(ySum / n);
-		int z = (int) Math.round(zSum / n);
+		final double n = points.size();
+		final int x = (int) Math.round(xSum / n);
+		final int y = (int) Math.round(ySum / n);
+		final int z = (int) Math.round(zSum / n);
 		return new Point(x, y, z);
 	}
 }

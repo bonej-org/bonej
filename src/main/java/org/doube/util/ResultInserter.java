@@ -74,13 +74,13 @@ public class ResultInserter {
 					// in which case, just insert the value
 					rt.setValue(colHeading, row, value);
 					return;
-				}	// but if there is, it might or might not have data in it
+				} // but if there is, it might or might not have data in it
 				final Double currentValue = rt.getValue(colHeading, row);
 				if (currentValue.equals(Double.NaN)) {
 					rt.setValue(colHeading, row, value);
 					return;
 				}
-					// look for another row with the right title
+				// look for another row with the right title
 			}
 		}
 		// we got to the end of the table without finding a space to insert

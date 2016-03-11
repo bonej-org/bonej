@@ -3,10 +3,9 @@ package org.doube.geometry;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import org.scijava.vecmath.Point3f;
-
 //import org.doube.jama.Matrix;
 import org.junit.Test;
+import org.scijava.vecmath.Point3f;
 
 public class VectorsTest {
 	Point3f p0 = new Point3f(1.0f, 2.0f, 3.0f);

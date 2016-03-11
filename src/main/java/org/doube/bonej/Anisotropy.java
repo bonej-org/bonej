@@ -17,24 +17,6 @@
  */
 package org.doube.bonej;
 
-import ij.IJ;
-import ij.ImagePlus;
-import ij.ImageStack;
-import ij.process.ImageProcessor;
-import ij.plugin.PlugIn;
-import ij.gui.*;
-import ij.macro.Interpreter;
-import ij.measure.Calibration;
-
-// for 3D plotting of coordinates
-import org.scijava.vecmath.Point3f;
-
-import Jama.EigenvalueDecomposition;
-import Jama.Matrix;
-
-import org.scijava.vecmath.Color3f;
-import customnode.CustomPointMesh;
-
 import java.awt.AWTEvent;
 import java.awt.Checkbox;
 import java.awt.TextField;
@@ -54,16 +36,28 @@ import org.doube.util.MatrixUtils;
 import org.doube.util.Multithreader;
 import org.doube.util.ResultInserter;
 import org.doube.util.UsageReporter;
+import org.scijava.vecmath.Color3f;
+// for 3D plotting of coordinates
+import org.scijava.vecmath.Point3f;
 
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
+import customnode.CustomPointMesh;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
 import ij.gui.DialogListener;
 import ij.gui.GenericDialog;
 import ij.gui.Plot;
+import ij.macro.Interpreter;
+import ij.measure.Calibration;
+import ij.plugin.PlugIn;
+import ij.process.ImageProcessor;
+import ij3d.Content;
 
 // for 3D plotting of coordinates
 
 import ij3d.Image3DUniverse;
-import ij3d.Content;
-
 
 /**
  * <p>
@@ -87,6 +81,7 @@ import ij3d.Content;
  */
 public class Anisotropy implements PlugIn, DialogListener {
 
+	@Override
 	public void run(final String arg) {
 		if (!ImageCheck.checkEnvironment()) {
 			return;
@@ -170,7 +165,7 @@ public class Anisotropy implements PlugIn, DialogListener {
 		ri.setResultInRow(imp, "DA", da);
 		ri.setResultInRow(imp, "tDA", Math.pow(1 - da, -1));
 
-		if (doEigens){
+		if (doEigens) {
 			final EigenvalueDecomposition E = (EigenvalueDecomposition) result[2];
 			final Matrix eVectors = E.getV();
 			MatrixUtils.printToIJLog(eVectors, "Fabric tensor vectors");
@@ -568,6 +563,7 @@ public class Anisotropy implements PlugIn, DialogListener {
 		final Thread[] threads = Multithreader.newThreads();
 		for (int thread = 0; thread < threads.length; thread++) {
 			threads[thread] = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					for (int v = ai.getAndIncrement(); v < nVectors; v = ai.getAndIncrement()) {
 						double nIntercepts = 0;
@@ -724,8 +720,8 @@ public class Anisotropy implements PlugIn, DialogListener {
 			da = Math.random();
 		}
 		final double[] coEf = (double[]) ellipsoid[3];
-		final double[][] tensor = { { coEf[0], coEf[3], coEf[4] },
-				{ coEf[3], coEf[1], coEf[5] }, { coEf[4], coEf[5], coEf[2] } };
+		final double[][] tensor = { { coEf[0], coEf[3], coEf[4] }, { coEf[3], coEf[1], coEf[5] },
+				{ coEf[4], coEf[5], coEf[2] } };
 		final Matrix M = new Matrix(tensor);
 		final EigenvalueDecomposition E = M.eig();
 		final Matrix EigenVal = E.getD();
@@ -740,6 +736,7 @@ public class Anisotropy implements PlugIn, DialogListener {
 		return result;
 	}
 
+	@Override
 	public boolean dialogItemChanged(final GenericDialog gd, final AWTEvent e) {
 		final Vector<?> checkboxes = gd.getCheckboxes();
 		final Vector<?> nFields = gd.getNumericFields();
