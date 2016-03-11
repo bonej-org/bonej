@@ -115,6 +115,7 @@
 
 	<properties>
 		<scijava.jvm.version>1.7</scijava.jvm.version>
+		<javadoc.skip>true</javadoc.skip>
 	</properties>
 
 	<modules>
