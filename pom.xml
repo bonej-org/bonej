@@ -149,4 +149,18 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<licenseName>gpl_v3</licenseName>
+					<organizationName>Michael Doube, BoneJ developers. See also individual class @authors.</organizationName>
+					<projectName>BoneJ: open source tools for trabecular geometry and whole bone shape analysis.</projectName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
