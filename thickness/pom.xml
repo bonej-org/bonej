@@ -3,18 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>sc.fiji</groupId>
-		<artifactId>pom-fiji</artifactId>
-		<version>21.2.0</version>
-		<relativePath />
+		<groupId>org.bonej</groupId>
+		<artifactId>pom-bonej</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
 	</parent>
 
-	<groupId>org.bonej</groupId>
-	<artifactId>pom-bonej</artifactId>
+	<artifactId>thickness</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
 
-	<description>Parent pom for BoneJ components.</description>
+	<name>plugins/thickness.jar</name>
+	<description>BoneJ distribution LocalThickness.</description>
 
 	<developers>
 		<developer>
@@ -73,32 +72,6 @@
 		</developer>
 	</developers>
 
-	<dependencyManagement>
-    <dependencies>
-      <!-- BoneJ modules -->
-      <dependency>
-        <groupId>org.bonej</groupId>
-        <artifactId>BoneJ</artifactId>
-        <version>1.5.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.bonej</groupId>
-        <artifactId>pqct</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.bonej</groupId>
-        <artifactId>thickness</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.bonej</groupId>
-        <artifactId>utils</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
-    </dependencies>
-	</dependencyManagement>
-
 	<scm>
 		<connection>scm:git:git://github.com/bonej-org/bonej</connection>
 		<developerConnection>scm:git:git@github.com:bonej-org/bonej</developerConnection>
@@ -113,23 +86,26 @@
 		<system>Jenkins</system>
 	</ciManagement>
 
-	<properties>
-		<scijava.jvm.version>1.7</scijava.jvm.version>
-	</properties>
-
-	<modules>
-		<module>bonej</module>
-		<module>pqct</module>
-    <module>thickness</module>
-    <module>utils</module>
-	</modules>
-
 	<repositories>
 		<repository>
 			<id>imagej.public</id>
 			<url>http://maven.imagej.net/content/groups/public</url>
 		</repository>
 	</repositories>
+
+	<dependencies>
+		<!-- BoneJ dependencies -->
+		<dependency>
+			<groupId>org.bonej</groupId>
+			<artifactId>utils</artifactId>
+		</dependency>
+
+		<!-- ImageJ dependencies -->
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -138,8 +114,8 @@
 				<artifactId>license-maven-plugin</artifactId>
 				<configuration>
 					<licenseName>gpl_v3</licenseName>
-					<organizationName>Michael Doube, BoneJ developers. See also individual class @authors.</organizationName>
-					<projectName>BoneJ: open source tools for trabecular geometry and whole bone shape analysis.</projectName>
+					<organizationName>OptiNav Inc., Bob Doughtery, Michael Doube, BoneJ developers.</organizationName>
+					<projectName>BoneJ fork of LocalThickness plugin.</projectName>
 				</configuration>
 			</plugin>
 		</plugins>
