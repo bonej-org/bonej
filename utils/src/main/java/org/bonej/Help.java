@@ -39,14 +39,12 @@ import ij.plugin.PlugIn;
 public class Help implements PlugIn {
 
 	/**
-	 * branch
-	 */
-	public static final String branch = "-testing";
-
-	/**
 	 * BoneJ version
+	 *
+	 * FIXME: it is fragile to have the version hard-coded here. Create a
+	 * BoneJApp instead.
 	 */
-	public static final String bonejVersion = "1.4.1" + branch;
+	public static final String bonejVersion = "1.5.0";
 
 	@Override
 	public void run(final String arg) {
